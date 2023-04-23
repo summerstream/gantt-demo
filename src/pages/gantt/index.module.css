@@ -1,5 +1,6 @@
 .page{
   padding: 20px;
+  background-color: white;
 }
 .main{
   width: 100%;
@@ -10,6 +11,7 @@
   justify-content: center;    
   border-top: 1px solid #ebebeb;
   border-left: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
   background-color: white;
   color: #454545;
 }
