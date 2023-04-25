@@ -1,11 +1,20 @@
+import { ganttConfig } from "./ganttConfig";
 import styles from "./index.module.css";
 import dayjs from "dayjs";
+import "../../util/excel";
+import { Button, Divider, Row, Space } from "antd";
+import { downloadExcel } from "../../util/excel";
 
 export default function Home() {
   const dates = getDates("4/24", "6/30");
 
   return (
     <div className={styles.page}>
+      <Row style={{ marginBottom: 20 }}>
+        <Button type="primary" onClick={downloadExcel}>
+          导出Excel
+        </Button>
+      </Row>
       <main className={styles.main}>
         <div className={styles.left}>
           <div className={styles.row}>
@@ -60,14 +69,21 @@ export default function Home() {
   );
 }
 
-function getDates(begin: string, end: string) {
-  let dates = [];
-  let d = dayjs(begin, "M/D");
-  let endDay = dayjs(end, "M/D");
-  for (; d.isBefore(endDay); ) {
-    dates.push(d.format("M/D"));
-    d = d.add(1, "day");
+function getDates(begin: string, end: string): string[] {
+  const dates: string[] = [];
+  const startDate = dayjs(begin, "M/D");
+  const endDate = dayjs(end, "M/D");
+
+  if (!startDate.isValid() || !endDate.isValid()) {
+    throw new Error("Invalid date format.");
   }
+
+  let currentDate = startDate;
+  while (currentDate.isBefore(endDate)) {
+    dates.push(currentDate.format("M/D"));
+    currentDate = currentDate.add(1, "day");
+  }
+
   console.info(dates);
   return dates;
 }
@@ -93,38 +109,6 @@ function Columns({ dates }: { dates: string[] }) {
     </>
   );
 }
-
-const ganttConfig = {
-  projects: [
-    {
-      name: "project1",
-      owner: "owner1",
-      tasks: [
-        { name: "dev", start: "04/24", end: "05/01" },
-        //联调
-        { name: "integrate", start: "05/01", end: "05/18" },
-        { name: "test", start: "05/18", end: "05/25" },
-        //验收
-        { name: "acceptance", start: "05/25", end: "05/27" },
-        { name: "deploy", start: "05/27", end: "05/28" },
-      ],
-    },
-    {
-      name: "project2",
-      owner: "owner2",
-      tasks: [
-        { name: "dev", start: "04/24", end: "05/12" },
-        { name: "integrate", start: "05/12", end: "05/18" },
-        { name: "test", start: "05/18", end: "05/24" },
-        //验收
-        { name: "acceptance", start: "05/24", end: "05/29" },
-        { name: "deploy", start: "05/29", end: "05/30" },
-      ],
-    },
-    {},
-    {},
-  ],
-};
 
 function calcWidthAndLeft(offsetBegin: string, start: string, end: string) {
   const offset = dayjs(offsetBegin, "M/D");
