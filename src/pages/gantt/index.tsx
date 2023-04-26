@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import "../../util/excel";
 import { Button, Divider, Row, Space } from "antd";
 import { downloadExcel } from "../../util/excel";
+import { isHoliday } from "../../util/date";
 
 export default function Home() {
   const dates = getDates("4/24", "6/30");
@@ -92,7 +93,12 @@ function Dates({ dates }: { dates: string[] }) {
   return (
     <>
       {dates.map((d) => (
-        <div key={d} className={styles.column}>
+        <div
+          key={d}
+          className={[styles.column, isHoliday(d) ? styles.holiday : ""].join(
+            " "
+          )}
+        >
           {d}
         </div>
       ))}

@@ -84,3 +84,7 @@ justify-content: center;
 .deploy{
   background-color: rgba(39, 183, 231, 0.659);
 }
+.holiday{
+  background-color: rgba(200,0,0,.05);
+  color:#b11d1d;
+}
