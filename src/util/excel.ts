@@ -1,6 +1,5 @@
-import { read, writeFileXLSX } from "xlsx";
 import * as XLSX from "xlsx";
-import { ganttConfig } from "../pages/gantt/ganttConfig";
+import { GanttConfigType, ganttConfig } from "../pages/gantt/ganttConfig";
 import dayjs from "dayjs";
 
 function transformGanttData(data: typeof ganttConfig) {
@@ -40,7 +39,7 @@ function transformGanttData(data: typeof ganttConfig) {
   });
 }
 
-export function downloadExcel() {
+export function downloadExcel(ganttConfig: GanttConfigType) {
   const data = transformGanttData(ganttConfig);
 
   const workbook = XLSX.utils.book_new();
