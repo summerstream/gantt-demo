@@ -1,6 +1,33 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { formatGanttConfig, ganttConfig } from "../pages/gantt/ganttConfig";
 
+function init() {
+  try {
+    const dft = JSON.stringify(ganttConfig);
+    let config =
+      typeof window != undefined && localStorage.getItem("ganttConfig");
+    if (!config) {
+      config = dft;
+      typeof window != undefined && localStorage.setItem("ganttConfig", dft);
+    }
+    if (config) {
+      // console.info("initConfig", config);
+      try {
+        return JSON.parse(config);
+      } catch (e) {
+        console.error(e);
+        return {};
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    return ganttConfig;
+    // return {
+    //   projects: [],
+    // };
+  }
+}
+
 const ganttConfigSlice = createSlice({
   name: "ganttConfig",
   initialState: ganttConfig,
@@ -27,6 +54,9 @@ const ganttConfigSlice = createSlice({
         console.error(e);
       }
     },
+    initConfig(state, action) {
+      return init();
+    },
   },
 });
 
@@ -35,5 +65,18 @@ export const store = configureStore({
     ganttConfig: ganttConfigSlice.reducer,
   },
 });
+store.subscribe(() => {
+  // console.info("store.subscribe", store.getState());
+  try {
+    typeof window != undefined &&
+      localStorage.setItem(
+        "ganttConfig",
+        JSON.stringify(store.getState().ganttConfig)
+      );
+  } catch (err) {
+    console.error(err);
+  }
+});
 export type RootState = ReturnType<typeof store.getState>;
-export const { changeTaskTime, importConfig } = ganttConfigSlice.actions;
+export const { changeTaskTime, importConfig, initConfig } =
+  ganttConfigSlice.actions;

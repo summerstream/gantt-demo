@@ -17,8 +17,13 @@ import { DatePicker } from "antd";
 import { RangePickerProps } from "antd/es/date-picker";
 import locale from "antd/locale/zh_CN";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, changeTaskTime, importConfig } from "../../store";
-import { useState } from "react";
+import {
+  RootState,
+  changeTaskTime,
+  importConfig,
+  initConfig,
+} from "../../store";
+import { useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 const { RangePicker } = DatePicker;
 
@@ -39,6 +44,9 @@ export default function Home() {
   const [json, setJSON] = useState(JSON.stringify(ganttConfig, null, 2));
   const dispatch = useDispatch();
   // console.info("ganttConfig", ganttConfig);
+  useEffect(() => {
+    dispatch(initConfig({}));
+  }, [1]);
   return (
     <ConfigProvider locale={locale}>
       <div className={styles.page}>
