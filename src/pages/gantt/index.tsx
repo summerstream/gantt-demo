@@ -36,8 +36,10 @@ const rangePickerConfig: RangePickerProps = {
   suffixIcon: null,
 };
 
+const GanttRange = ["8/20", "10/30"];
+
 export default function Home() {
-  const dates = getDates("4/24", "6/30");
+  const dates = getDates(GanttRange);
   const ganttConfig = useSelector((state: RootState) => state.ganttConfig);
   const [open, setOpen] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -147,7 +149,7 @@ export default function Home() {
 
                 {p?.tasks?.map((t, index) => {
                   const { left, width } = calcWidthAndLeft(
-                    "4/24",
+                    GanttRange[0],
                     t.start,
                     t.end
                   );
@@ -217,7 +219,8 @@ function DateRangePicker({
   );
 }
 
-function getDates(begin: string, end: string): string[] {
+function getDates(arr: string[]): string[] {
+  const [begin, end] = arr;
   const dates: string[] = [];
   const startDate = dayjs(begin, "M/D");
   const endDate = dayjs(end, "M/D");
@@ -264,7 +267,7 @@ function Columns({ dates }: { dates: string[] }) {
   );
 }
 
-function calcWidthAndLeft(offsetBegin: string, start: string, end: string) {
+function calcWidthAndLeft(offsetBegin: string, start?: string, end?: string) {
   if (!start || !end) {
     return {};
   }
