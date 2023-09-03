@@ -33,6 +33,9 @@
   min-width: 70px;
 justify-content: center;
 }
+.metaTitle input {
+  text-align: center;
+}
 
 .right{
   flex: 1;

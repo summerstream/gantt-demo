@@ -54,6 +54,22 @@ const ganttConfigSlice = createSlice({
         console.error(e);
       }
     },
+    modifyProjectInfo(state, action) {
+      const { task, project, name, owner } = action.payload;
+      // console.info("payload", action.payload);
+      const p = state.projects.find(
+        (p) => p.name === project.name && p.owner == project.owner
+      );
+      if (!p) {
+        return;
+      }
+      if (name) {
+        p.name = name;
+      }
+      if (owner) {
+        p.owner = owner;
+      }
+    },
     initConfig(state, action) {
       return init();
     },
@@ -78,5 +94,5 @@ store.subscribe(() => {
   }
 });
 export type RootState = ReturnType<typeof store.getState>;
-export const { changeTaskTime, importConfig, initConfig } =
+export const { changeTaskTime, importConfig, initConfig, modifyProjectInfo } =
   ganttConfigSlice.actions;

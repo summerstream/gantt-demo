@@ -22,6 +22,7 @@ import {
   changeTaskTime,
   importConfig,
   initConfig,
+  modifyProjectInfo,
 } from "../../store";
 import { useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
@@ -122,10 +123,34 @@ export default function Home() {
               return (
                 <div key={index} className={styles.row}>
                   <div className={styles.metaTitle} style={{ width: 100 }}>
-                    {p.owner || ""}
+                    <Input
+                      bordered={false}
+                      value={p.owner || ""}
+                      onChange={(e) => {
+                        // console.info("e", e);
+                        dispatch(
+                          modifyProjectInfo({
+                            project: p,
+                            owner: e.target.value,
+                          })
+                        );
+                      }}
+                    />
                   </div>
                   <div className={styles.metaTitle} style={{ width: 210 }}>
-                    {p.name || ""}
+                    <Input
+                      bordered={false}
+                      value={p.name || ""}
+                      onChange={(e) => {
+                        // console.info("e", e);
+                        dispatch(
+                          modifyProjectInfo({
+                            project: p,
+                            name: e.target.value,
+                          })
+                        );
+                      }}
+                    />
                   </div>
                   <div
                     className={styles.metaTitle}
