@@ -70,6 +70,18 @@ const ganttConfigSlice = createSlice({
         p.owner = owner;
       }
     },
+    addProject(state, action) {
+      console.info(action.payload);
+
+      const { owner, name } = action.payload;
+      const index = state.projects.findLastIndex((v) => v.owner == owner);
+
+      state.projects.splice(index + 1, -1, {
+        name,
+        owner,
+        tasks: [],
+      });
+    },
     initConfig(state, action) {
       return init();
     },
@@ -94,5 +106,11 @@ store.subscribe(() => {
   }
 });
 export type RootState = ReturnType<typeof store.getState>;
-export const { changeTaskTime, importConfig, initConfig, modifyProjectInfo } =
-  ganttConfigSlice.actions;
+export const {
+  changeTaskTime,
+  importConfig,
+  initConfig,
+  modifyProjectInfo,
+  addProject,
+} = ganttConfigSlice.actions;
+

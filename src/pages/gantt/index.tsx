@@ -24,8 +24,10 @@ import {
   initConfig,
   modifyProjectInfo,
 } from "../../store";
+// import * as actions from '../../store'
 import { useEffect, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import ProjectModal from "../../components/ProjectModal";
 const { RangePicker } = DatePicker;
 
 const rangePickerConfig: RangePickerProps = {
@@ -43,6 +45,7 @@ export default function Home() {
   const dates = getDates(GanttRange);
   const ganttConfig = useSelector((state: RootState) => state.ganttConfig);
   const [open, setOpen] = useState(false);
+  const [projectModalVisible, setProjectModalVisible] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [json, setJSON] = useState(JSON.stringify(ganttConfig, null, 2));
   const dispatch = useDispatch();
@@ -77,6 +80,9 @@ export default function Home() {
               }}
             >
               导出config
+            </Button>
+            <Button type="primary" onClick={() => setProjectModalVisible(true)}>
+              新建项目
             </Button>
           </Space>
         </Row>
@@ -211,6 +217,10 @@ export default function Home() {
               ></Input.TextArea>
             </div>
           </Modal>
+          <ProjectModal
+            visible={projectModalVisible}
+            closeModal={() => setProjectModalVisible(false)}
+          />
         </main>
       </div>
     </ConfigProvider>
